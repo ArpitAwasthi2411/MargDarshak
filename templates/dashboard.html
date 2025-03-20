@@ -1,16 +1,57 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-    <h2 class="text-center">Welcome, {{ user.email }}</h2>
-    <p class="text-center">Role: {{ user.role | capitalize }}</p>
-    {% if user.role == 'mentee' and not user.sopi %}
-        <div class="text-center">
-            <a href="{{ url_for('chatbot') }}" class="btn btn-primary">Set Your SOPI</a>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Welcome, {{ user.email }}!</h1>
+        <p>Unlock your entrepreneurial potential with MargDarshak</p>
+    </div>
+
+    <!-- About the Platform Section -->
+    <div class="about-section">
+        <h2>About MargDarshak</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="about-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Connect with Mentors</h3>
+                    <p>MargDarshak pairs mentees with experienced mentors to guide them on their entrepreneurial journey.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>AI-Driven Matching</h3>
+                    <p>Our AI matches you with mentors based on your Statement of Purpose or Interest (SOPI).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="about-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Hands-On Growth</h3>
+                    <p>Work on micro-projects and attend mentor-led events to gain practical experience.</p>
+                </div>
+            </div>
         </div>
-    {% elif user.role == 'mentee' %}
-        <div class="text-center">
-            <p>Your SOPI: {{ user.sopi }}</p>
-            <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Find a Mentor</a>
+    </div>
+
+    <!-- Call-to-Action Section -->
+    <div class="card text-center">
+        <div class="card-body">
+            <h3>Next Steps for You</h3>
+            <p>Role: {{ user.role | capitalize }}</p>
+            {% if user.role == 'mentee' and not user.sopi %}
+                <p>Start by setting your Statement of Purpose or Interest (SOPI) to find the right mentor.</p>
+                <a href="{{ url_for('chatbot') }}" class="btn btn-primary">Set Your SOPI</a>
+            {% elif user.role == 'mentee' %}
+                <p>Your SOPI: {{ user.sopi }}</p>
+                <p>Find a mentor to guide you on your entrepreneurial journey.</p>
+                <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Find a Mentor</a>
+            {% elif user.role == 'mentor' %}
+                <p>Your Expertise: {{ user.expertise }}</p>
+                <p>Help a mentee by assigning micro-projects or hosting events.</p>
+                <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">View Mentees</a>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

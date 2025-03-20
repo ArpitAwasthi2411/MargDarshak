@@ -1,15 +1,123 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <h1 class="text-center">Welcome to MargDarshak</h1>
-    <p class="text-center">A platform to connect mentees with mentors for entrepreneurial growth.</p>
-    {% if not session.user_id %}
-        <div class="text-center">
-            <a href="{{ url_for('signup') }}" class="btn btn-primary">Get Started</a>
+    <!-- Full-Width Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1 data-aos="fade-up">Welcome to MargDarshak</h1>
+            <p data-aos="fade-up" data-aos-delay="100"><span id="typed-text" class="typed-text"></span></p>
         </div>
-    {% else %}
-        <div class="text-center">
-            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+
+    <!-- About MargDarshak Section -->
+    <div class="about-section container">
+        <h2 data-aos="fade-up">What is MargDarshak?</h2>
+        <div class="row">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="about-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Connect with Mentors</h3>
+                    <p>MargDarshak pairs mentees with experienced mentors to guide them on their entrepreneurial journey.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="about-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>AI-Driven Matching</h3>
+                    <p>Our AI matches you with mentors based on your Statement of Purpose or Interest (SOPI).</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="about-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Hands-On Growth</h3>
+                    <p>Work on micro-projects and attend mentor-led events to gain practical experience.</p>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
+
+    <!-- Top Mentors Section -->
+    <div class="top-mentors-section container">
+        <h2 data-aos="fade-up">Meet Our Top Mentors</h2>
+        <div class="swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper-wrapper">
+                <!-- Mock mentor data -->
+                <div class="swiper-slide">
+                    <div class="mentor-card">
+                        <img src="https://via.placeholder.com/100" alt="Mentor 1">
+                        <h3>John Doe</h3>
+                        <p>Expertise: Fintech Founder</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="mentor-card">
+                        <img src="https://via.placeholder.com/100" alt="Mentor 2">
+                        <h3>Jane Smith</h3>
+                        <p>Expertise: E-commerce Specialist</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="mentor-card">
+                        <img src="https://via.placeholder.com/100" alt="Mentor 3">
+                        <h3>Michael Brown</h3>
+                        <p>Expertise: Tech Entrepreneur</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Navigation -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-section">
+        <div class="container">
+            <h2 data-aos="fade-up">Contact Us</h2>
+            <div class="row">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i>Email: support@margdarshak.com</p>
+                        <p><i class="fas fa-phone"></i>Phone: +1 (123) 456-7890</p>
+                        <p><i class="fas fa-map-marker-alt"></i>Address: 123 Green Street, Tech City</p>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="3" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call-to-Action Section -->
+    <div class="container">
+        <div class="card text-center" data-aos="fade-up">
+            <div class="card-body">
+                <h3>Ready to Start Your Journey?</h3>
+                <p>Join MargDarshak today and unlock your entrepreneurial potential.</p>
+                {% if not session.user_id %}
+                    <a href="{{ url_for('signup') }}" class="btn btn-primary">Get Started</a>
+                {% else %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

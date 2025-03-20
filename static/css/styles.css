@@ -1,25 +1,377 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body styling with a light background */
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f7f5; /* Light green-gray background */
+    color: #2d3e40; /* Dark teal text color */
 }
+
+/* Secondary navbar for achievements and news */
+.secondary-nav {
+    background: linear-gradient(45deg, #2ecc71, #27ae60, #219653);
+    padding: 10px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-nav .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.secondary-nav .nav-link:hover {
+    color: #e0f7e9 !important;
+}
+
+/* Main navbar */
+.navbar {
+    background: #fff;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand, .nav-link {
+    color: #2ecc71 !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #27ae60 !important;
+}
+
+/* Full-width hero section */
+.hero-section {
+    background: linear-gradient(rgba(46, 204, 113, 0.8), rgba(33, 150, 83, 0.8)), url('/static/images/hero-bg.jpg') no-repeat center center/cover;
+    color: #fff;
+    padding: 100px 20px;
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hero-section .typed-text {
+    font-size: 1.8rem;
+    font-weight: 300;
+    display: inline-block;
+    min-height: 40px;
+}
+
+.hero-section .typed-cursor {
+    font-size: 1.8rem;
+    color: #fff;
+    animation: blink 0.7s infinite;
+}
+
+/* Container styling */
 .container {
-    margin-top: 30px;
+    max-width: 1200px; /* Wider container for PC view */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
 }
+
+/* About section */
+.about-section {
+    margin-bottom: 50px;
+}
+
+.about-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #2d3e40;
+}
+
+.about-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.about-card i {
+    font-size: 2.5rem;
+    color: #2ecc71;
+    margin-bottom: 15px;
+}
+
+.about-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.about-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Top mentors section */
+.top-mentors-section {
+    margin-bottom: 50px;
+}
+
+.top-mentors-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #2d3e40;
+}
+
+.mentor-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mentor-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.mentor-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mentor-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Swiper carousel styles */
+.swiper {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    color: #2ecc71;
+}
+
+.swiper-pagination-bullet-active {
+    background: #2ecc71;
+}
+
+/* Contact us section */
+.contact-section {
+    background: #e0f7e9;
+    padding: 50px 0;
+    margin-bottom: 50px;
+}
+
+.contact-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #2d3e40;
+}
+
+.contact-info {
+    margin-bottom: 30px;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    color: #2d3e40;
+    margin-bottom: 10px;
+}
+
+.contact-info i {
+    color: #2ecc71;
+    margin-right: 10px;
+}
+
+/* Card styling for content sections */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Gradient buttons */
+.btn-primary {
+    background: linear-gradient(45deg, #2ecc71, #27ae60, #219653);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 500;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+/* Form inputs */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #dbdbdb;
+    padding: 10px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+}
+
+/* Chatbot container */
 .chatbot-container {
-    border: 1px solid #ccc;
+    border: 1px solid #dbdbdb;
+    border-radius: 15px;
     padding: 15px;
     height: 300px;
     overflow-y: scroll;
     background-color: #fff;
-    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
+
 .chatbot-message {
     margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 70%;
+    display: inline-block;
 }
+
 .chatbot-message.bot {
+    background-color: #e6f7e9;
+    color: #27ae60;
     text-align: left;
-    color: #007bff;
 }
+
 .chatbot-message.user {
+    background-color: #2ecc71;
+    color: #fff;
     text-align: right;
-    color: #28a745;
+    margin-left: auto;
+}
+
+/* List group for mentors and projects */
+.list-group-item {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateY(-3px);
+}
+
+/* Headings */
+h1, h2, h3 {
+    font-weight: 600;
+    color: #2d3e40;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+
+    .hero-section {
+        padding: 60px 20px;
+        min-height: 400px;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .hero-section .typed-text {
+        font-size: 1.2rem;
+    }
+
+    .about-card {
+        margin-bottom: 20px;
+    }
+
+    .mentor-card img {
+        width: 80px;
+        height: 80px;
+    }
 }

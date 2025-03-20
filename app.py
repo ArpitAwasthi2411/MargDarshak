@@ -92,41 +92,32 @@ def chatbot():
         return redirect(url_for('dashboard'))
 
     return render_template('chatbot.html', messages=messages)
-# Match mentors route
+
+# Match mentors/mentees route
 @app.route('/match-mentors')
 def match_mentors():
     if 'user_id' not in session:
         flash('Please sign up first.', 'danger')
         return redirect(url_for('signup'))
     user = User.query.get(session['user_id'])
-    if user.role != 'mentee':
-        flash('Only mentees can find mentors.', 'danger')
-        return redirect(url_for('dashboard'))
-    if not user.sopi:
-        flash('Please set your SOPI first.', 'danger')
-        return redirect(url_for('chatbot'))
 
-    # Simulated AI: Keyword-based matching
-    keywords = user.sopi.lower().split()
-    mentors = User.query.filter_by(role='mentor').all()
-    matched_mentors = [
-        mentor for mentor in mentors
-        if mentor.expertise and any(keyword in mentor.expertise.lower().split() for keyword in keywords)
-    ]
+    if user.role == 'mentee':
+        if not user.sopi:
+            flash('Please set your SOPI first.', 'danger')
+            return redirect(url_for('chatbot'))
+        # Simulated AI: Keyword-based matching for mentees to find mentors
+        keywords = user.sopi.lower().split()
+        mentors = User.query.filter_by(role='mentor').all()
+        matched_mentors = [
+            mentor for mentor in mentors
+            if mentor.expertise and any(keyword in mentor.expertise.lower().split() for keyword in keywords)
+        ]
+        return render_template('match_mentors.html', mentors=matched_mentors, mentee_id=user.id)
+    else:  # user.role == 'mentor'
+        # Show mentees to the mentor
+        mentees = User.query.filter_by(role='mentee').all()
+        return render_template('match_mentors.html', mentees=mentees, mentor_id=user.id)
 
-    return render_template('match_mentors.html', mentors=matched_mentors, mentee_id=user.id)
-# Event page route
-@app.route('/event/<int:mentor_id>/<int:mentee_id>')
-def event_page(mentor_id, mentee_id):
-    if 'user_id' not in session:
-        flash('Please sign up first.', 'danger')
-        return redirect(url_for('signup'))
-    user = User.query.get(session['user_id'])
-    mentor = User.query.get(mentor_id)
-    if user.role != 'mentee' or user.id != mentee_id:
-        flash('Only the assigned mentee can view this event.', 'danger')
-        return redirect(url_for('dashboard'))
-    return render_template('event.html', mentor=mentor)
 # Micro-projects route
 @app.route('/micro-projects/<int:mentor_id>/<int:mentee_id>', methods=['GET', 'POST'])
 def micro_projects(mentor_id, mentee_id):
@@ -155,6 +146,20 @@ def micro_projects(mentor_id, mentee_id):
 
     projects = MicroProject.query.filter_by(mentee_id=mentee_id).all()
     return render_template('micro_projects.html', user=user, mentor=mentor, mentee=mentee, projects=projects)
+
+# Event page route
+@app.route('/event/<int:mentor_id>/<int:mentee_id>')
+def event_page(mentor_id, mentee_id):
+    if 'user_id' not in session:
+        flash('Please sign up first.', 'danger')
+        return redirect(url_for('signup'))
+    user = User.query.get(session['user_id'])
+    mentor = User.query.get(mentor_id)
+    if user.role != 'mentee' or user.id != mentee_id:
+        flash('Only the assigned mentee can view this event.', 'danger')
+        return redirect(url_for('dashboard'))
+    return render_template('event.html', mentor=mentor)
+
 # Logout route
 @app.route('/logout')
 def logout():

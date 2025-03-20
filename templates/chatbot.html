@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block title %}Chatbot{% endblock %}
 {% block content %}
-    <h2 class="text-center">MargDarshak AI Chatbot</h2>
-    <div class="chatbot-container mt-4">
-        {% for message in messages %}
-            <div class="chatbot-message {{ message.sender }}">
-                <strong>{{ message.sender | capitalize }}:</strong> {{ message.text }}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="text-center">MargDarshak AI Chatbot</h2>
+            <div class="chatbot-container mt-4">
+                {% for message in messages %}
+                    <div class="chatbot-message {{ message.sender }}">
+                        <strong>{{ message.sender | capitalize }}:</strong> {{ message.text }}
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
-    <form method="POST" class="mt-3">
-        <div class="mb-3">
-            <input type="text" class="form-control" name="input" placeholder="Type your goals..." required>
+            <form method="POST" class="mt-3">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="input" placeholder="Type your goals..." required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Send</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Send</button>
-    </form>
+    </div>
 {% endblock %}

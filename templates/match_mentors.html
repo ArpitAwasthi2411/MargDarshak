@@ -1,17 +1,50 @@
 {% extends 'base.html' %}
-{% block title %}Find a Mentor{% endblock %}
+{% block title %}
+    {% if mentors %}Find a Mentor{% else %}View Mentees{% endif %}
+{% endblock %}
 {% block content %}
-    <h2 class="text-center">Find a Mentor with MargDarshak</h2>
-    {% if mentors %}
-        <ul class="list-group mt-4">
-            {% for mentor in mentors %}
-                <li class="list-group-item">
-                    {{ mentor.email }} - Expertise: {{ mentor.expertise }}
-                    <a href="{{ url_for('micro_projects', mentor_id=mentor.id, mentee_id=mentee_id) }}" class="btn btn-sm btn-primary float-end">Select</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p class="text-center mt-4">No mentors found. Update your SOPI to improve matches.</p>
-    {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="text-center">
+                {% if mentors %}
+                    Find a Mentor with MargDarshak
+                {% else %}
+                    Mentees Looking for Guidance
+                {% endif %}
+            </h2>
+            {% if mentors %}
+                {% if mentors %}
+                    <ul class="list-group mt-4">
+                        {% for mentor in mentors %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ mentor.email }}</strong><br>
+                                    <small>Expertise: {{ mentor.expertise }}</small>
+                                </div>
+                                <a href="{{ url_for('micro_projects', mentor_id=mentor.id, mentee_id=mentee_id) }}" class="btn btn-primary btn-sm">Select</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center mt-4">No mentors found. Update your SOPI to improve matches.</p>
+                {% endif %}
+            {% else %}
+                {% if mentees %}
+                    <ul class="list-group mt-4">
+                        {% for mentee in mentees %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ mentee.email }}</strong><br>
+                                    <small>SOPI: {{ mentee.sopi or 'Not set' }}</small>
+                                </div>
+                                <a href="{{ url_for('micro_projects', mentor_id=mentor_id, mentee_id=mentee.id) }}" class="btn btn-primary btn-sm">Select</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center mt-4">No mentees found at the moment.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

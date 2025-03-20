@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Mentor-Led Event{% endblock %}
 {% block content %}
-    <h2 class="text-center">MargDarshak Mentor-Led Event</h2>
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Fintech Startup Showcase</h5>
-            <p class="card-text">Hosted by {{ mentor.email }}</p>
-            <p class="card-text">Join this event to learn about their journey and network with industry professionals.</p>
+    <div class="card">
+        <div class="card-body text-center">
+            <h2>MargDarshak Mentor-Led Event</h2>
+            <h5 class="mt-3">Fintech Startup Showcase</h5>
+            <p>Hosted by {{ mentor.email }}</p>
+            <p>Join this event to learn about their journey and network with industry professionals.</p>
             <button class="btn btn-primary w-100">Join Event</button>
         </div>
     </div>
