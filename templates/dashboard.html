@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <h2 class="text-center">Welcome, {{ user.email }}</h2>
+    <p class="text-center">Role: {{ user.role | capitalize }}</p>
+    {% if user.role == 'mentee' and not user.sopi %}
+        <div class="text-center">
+            <a href="{{ url_for('chatbot') }}" class="btn btn-primary">Set Your SOPI</a>
+        </div>
+    {% elif user.role == 'mentee' %}
+        <div class="text-center">
+            <p>Your SOPI: {{ user.sopi }}</p>
+            <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Find a Mentor</a>
+        </div>
+    {% endif %}
+{% endblock %}

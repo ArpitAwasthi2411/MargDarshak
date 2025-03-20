@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Find a Mentor{% endblock %}
+{% block content %}
+    <h2 class="text-center">Find a Mentor with MargDarshak</h2>
+    {% if mentors %}
+        <ul class="list-group mt-4">
+            {% for mentor in mentors %}
+                <li class="list-group-item">
+                    {{ mentor.email }} - Expertise: {{ mentor.expertise }}
+                    <a href="{{ url_for('micro_projects', mentor_id=mentor.id, mentee_id=mentee_id) }}" class="btn btn-sm btn-primary float-end">Select</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center mt-4">No mentors found. Update your SOPI to improve matches.</p>
+    {% endif %}
+{% endblock %}

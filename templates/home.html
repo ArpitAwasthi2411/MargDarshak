@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1 class="text-center">Welcome to MargDarshak</h1>
+    <p class="text-center">A platform to connect mentees with mentors for entrepreneurial growth.</p>
+    {% if not session.user_id %}
+        <div class="text-center">
+            <a href="{{ url_for('signup') }}" class="btn btn-primary">Get Started</a>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+    {% endif %}
+{% endblock %}

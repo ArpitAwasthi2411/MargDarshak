@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+    <h2 class="text-center">Sign Up for MargDarshak</h2>
+    <form method="POST" class="mt-4">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select" id="role" name="role" onchange="toggleFields(this.value)">
+                <option value="mentee">Mentee</option>
+                <option value="mentor">Mentor</option>
+            </select>
+        </div>
+        <div class="mb-3" id="sopi-field">
+            <label for="sopi" class="form-label">Statement of Purpose or Interest (SOPI)</label>
+            <input type="text" class="form-control" id="sopi" name="sopi" placeholder="e.g., Start a fintech company">
+        </div>
+        <div class="mb-3" id="expertise-field" style="display: none;">
+            <label for="expertise" class="form-label">Expertise</label>
+            <input type="text" class="form-control" id="expertise" name="expertise" placeholder="e.g., Fintech Founder">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+    <script>
+        function toggleFields(role) {
+            document.getElementById('sopi-field').style.display = role === 'mentee' ? 'block' : 'none';
+            document.getElementById('expertise-field').style.display = role === 'mentor' ? 'block' : 'none';
+        }
+    </script>
+{% endblock %}
