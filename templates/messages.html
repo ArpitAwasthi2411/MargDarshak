@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
-{% block title %}Chatbot{% endblock %}
+{% block title %}Messages{% endblock %}
 {% block content %}
     <div class="container">
-        <h2 class="text-center mt-4">Chat with MargDarshak Bot</h2>
+        <h2 class="text-center mt-4">Messages with {{ other_user.name }} ({{ other_user.username }})</h2>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="messages-container">
                     {% for message in messages %}
-                        <div class="message {% if message.sender == 'user' %}sent{% else %}received{% endif %}">
-                            <p>{{ message.text }}</p>
+                        <div class="message {% if message.sender_id == user.id %}sent{% else %}received{% endif %}">
+                            <p>{{ message.content }}</p>
+                            <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
                         </div>
                     {% endfor %}
                 </div>
                 <form method="POST" class="mt-4">
                     <div class="mb-3">
-                        <label for="input" class="form-label">Your Message</label>
-                        <textarea class="form-control" id="input" name="input" rows="3" required></textarea>
+                        <label for="content" class="form-label">Your Message</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Send</button>
                 </form>

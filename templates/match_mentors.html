@@ -1,50 +1,70 @@
 {% extends 'base.html' %}
-{% block title %}
-    {% if mentors %}Find a Mentor{% else %}View Mentees{% endif %}
-{% endblock %}
+{% block title %}Match Mentors{% endblock %}
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <h2 class="text-center">
-                {% if mentors %}
-                    Find a Mentor with MargDarshak
-                {% else %}
-                    Mentees Looking for Guidance
-                {% endif %}
-            </h2>
-            {% if mentors %}
-                {% if mentors %}
-                    <ul class="list-group mt-4">
-                        {% for mentor in mentors %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>{{ mentor.email }}</strong><br>
-                                    <small>Expertise: {{ mentor.expertise }}</small>
-                                </div>
-                                <a href="{{ url_for('micro_projects', mentor_id=mentor.id, mentee_id=mentee_id) }}" class="btn btn-primary btn-sm">Select</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-center mt-4">No mentors found. Update your SOPI to improve matches.</p>
-                {% endif %}
+    <div class="container">
+        <h2 class="text-center mt-4">
+            {% if user.role == 'entrepreneur' %}
+                Find a Mentor
             {% else %}
-                {% if mentees %}
-                    <ul class="list-group mt-4">
-                        {% for mentee in mentees %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>{{ mentee.email }}</strong><br>
-                                    <small>SOPI: {{ mentee.sopi or 'Not set' }}</small>
-                                </div>
-                                <a href="{{ url_for('micro_projects', mentor_id=mentor_id, mentee_id=mentee.id) }}" class="btn btn-primary btn-sm">Select</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-center mt-4">No mentees found at the moment.</p>
-                {% endif %}
+                Search Entrepreneurs
             {% endif %}
-        </div>
+        </h2>
+
+        {% if user.role == 'entrepreneur' %}
+            <!-- Search Bar -->
+            <form method="POST" class="mt-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="search" placeholder="Search mentors by experience (e.g., fintech)" value="{{ request.form.search or '' }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+
+            <!-- Recommended Mentors -->
+            <h3>Recommended Mentors</h3>
+            <div class="list-group mt-4">
+                {% for mentor, score in mentors %}
+                    <div class="list-group-item">
+                        <h4>{{ mentor.name }} ({{ mentor.username }})</h4>
+                        <p><strong>Experience:</strong> {{ mentor.experience or 'Not set' }}</p>
+                        <p><strong>Matching Keywords:</strong> {{ (score * (mentor.experience or '').split() | length) | round(0) | int }}</p>
+                        <a href="{{ url_for('messages', other_user_id=mentor.id) }}" class="btn btn-primary">Message</a>
+                        <a href="{{ url_for('event_page', mentor_id=mentor.id, entrepreneur_id=entrepreneur_id) }}" class="btn btn-primary">View Events</a>
+                        {% if mentor.id in existing_requests %}
+                            <button class="btn btn-secondary" disabled>Request {{ existing_requests[mentor.id] | capitalize }}</button>
+                        {% else %}
+                            <form method="POST" action="{{ url_for('request_mentorship', mentor_id=mentor.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-primary">Request Mentorship</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No mentors found matching your criteria.</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Search Bar -->
+            <form method="POST" class="mt-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="search" placeholder="Search entrepreneurs by vision statement (e.g., fintech)" value="{{ request.form.search or '' }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+
+            <!-- Entrepreneurs List for Mentors -->
+            <h3>Entrepreneurs</h3>
+            <div class="list-group mt-4">
+                {% for entrepreneur, score in entrepreneurs %}
+                    <div class="list-group-item">
+                        <h4>{{ entrepreneur.name }} ({{ entrepreneur.username }})</h4>
+                        <p><strong>Vision Statement:</strong> {{ entrepreneur.vision_statement or 'Not set' }}</p>
+                        <p><strong>Matching Keywords:</strong> {{ (score * (entrepreneur.vision_statement or '').split() | length) | round(0) | int }}</p>
+                        <a href="{{ url_for('messages', other_user_id=entrepreneur.id) }}" class="btn btn-primary">Message</a>
+                        <a href="{{ url_for('event_page', mentor_id=mentor_id, entrepreneur_id=entrepreneur.id) }}" class="btn btn-primary">Host Event</a>
+                    </div>
+                {% else %}
+                    <p>No entrepreneurs found.</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

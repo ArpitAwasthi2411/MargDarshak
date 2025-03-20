@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center mt-4">Your Profile</h2>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3>{{ user.role | capitalize }} Details</h3>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                {% if user.role == 'entrepreneur' %}
+                    <p><strong>SOPI:</strong> {{ user.sopi or 'Not set' }}</p>
+                    <p><strong>Bio:</strong> {{ user.bio or 'Not set' }}</p>
+                {% else %}
+                    <p><strong>Expertise:</strong> {{ user.expertise or 'Not set' }}</p>
+                    <p><strong>LinkedIn:</strong> {% if user.linkedin %}<a href="{{ user.linkedin }}" target="_blank">{{ user.linkedin }}</a>{% else %}Not set{% endif %}</p>
+                    <p><strong>Qualifications:</strong> {{ user.qualifications or 'Not set' }}</p>
+                    <p><strong>Life Journey:</strong> {{ user.life_journey or 'Not set' }}</p>
+                    <p><strong>Availability:</strong> {{ user.availability or 'Not set' }}</p>
+                    <p><strong>Interaction Style:</strong> {{ user.interaction_style or 'Not set' }}</p>
+                {% endif %}
+                <button class="btn btn-primary toggle-edit-form">Edit Profile</button>
+
+                <!-- Edit Profile Form -->
+                <form method="POST" class="edit-profile-form mt-4">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    {% if user.role == 'entrepreneur' %}
+                        <div class="mb-3">
+                            <label for="sopi" class="form-label">Statement of Purpose or Interest (SOPI)</label>
+                            <input type="text" class="form-control" id="sopi" name="sopi" value="{{ user.sopi or '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3">{{ user.bio or '' }}</textarea>
+                        </div>
+                    {% else %}
+                        <div class="mb-3">
+                            <label for="expertise" class="form-label">Expertise</label>
+                            <input type="text" class="form-control" id="expertise" name="expertise" value="{{ user.expertise or '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="linkedin" class="form-label">LinkedIn URL</label>
+                            <input type="url" class="form-control" id="linkedin" name="linkedin" value="{{ user.linkedin or '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="qualifications" class="form-label">Qualifications</label>
+                            <textarea class="form-control" id="qualifications" name="qualifications" rows="3">{{ user.qualifications or '' }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="life_journey" class="form-label">Life Journey</label>
+                            <textarea class="form-control" id="life_journey" name="life_journey" rows="5">{{ user.life_journey or '' }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="availability" class="form-label">Availability</label>
+                            <input type="text" class="form-control" id="availability" name="availability" value="{{ user.availability or '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="interaction_style" class="form-label">Preferred Interaction Style</label>
+                            <select class="form-control" id="interaction_style" name="interaction_style">
+                                <option value="one-on-one" {% if user.interaction_style == 'one-on-one' %}selected{% endif %}>One-on-One Sessions</option>
+                                <option value="group" {% if user.interaction_style == 'group' %}selected{% endif %}>Group Events</option>
+                                <option value="both" {% if user.interaction_style == 'both' %}selected{% endif %}>Both</option>
+                            </select>
+                        </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+{% endblock %}

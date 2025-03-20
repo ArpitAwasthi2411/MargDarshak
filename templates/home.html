@@ -9,6 +9,25 @@
         </div>
     </div>
 
+    <!-- Success Stories Section -->
+    <div class="success-stories-section container">
+        <h2 data-aos="fade-up">Success Stories</h2>
+        <div class="swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper-wrapper">
+                {% for story in success_stories %}
+                    <div class="swiper-slide">
+                        <div class="story-card">
+                            <img src="{{ story.image or 'https://via.placeholder.com/100' }}" alt="{{ story.title }}">
+                            <p>{{ story.title }}<br><small>By {{ story.mentee.email }} and {{ story.mentor.email }}</small></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
     <!-- About MargDarshak Section -->
     <div class="about-section container">
         <h2 data-aos="fade-up">What is MargDarshak?</h2>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Network{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center mt-4">Network with Other Entrepreneurs</h2>
+
+        <!-- Pending Connection Requests -->
+        <h3>Pending Connection Requests</h3>
+        <div class="list-group mt-4">
+            {% for request in pending_requests %}
+                <div class="list-group-item">
+                    <h4>{{ request.user.email }}</h4>
+                    <p><strong>SOPI:</strong> {{ request.user.sopi or 'Not set' }}</p>
+                    <form method="POST" class="d-inline">
+                        <input type="hidden" name="connected_user_id" value="{{ request.user.id }}">
+                        <input type="hidden" name="action" value="accept">
+                        <button type="submit" class="btn btn-primary">Accept</button>
+                    </form>
+                    <form method="POST" class="d-inline">
+                        <input type="hidden" name="connected_user_id" value="{{ request.user.id }}">
+                        <input type="hidden" name="action" value="decline">
+                        <button type="submit" class="btn btn-secondary">Decline</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>No pending connection requests.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Your Connections -->
+        <h3>Your Connections</h3>
+        <div class="list-group mt-4">
+            {% for connection in connections if connection.status == 'accepted' %}
+                <div class="list-group-item">
+                    <h4>{{ connection.connected_user.email }}</h4>
+                    <p><strong>SOPI:</strong> {{ connection.connected_user.sopi or 'Not set' }}</p>
+                    <a href="{{ url_for('messages', other_user_id=connection.connected_user.id) }}" class="btn btn-primary">Message</a>
+                </div>
+            {% else %}
+                <p>You have no connections yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Recommended Entrepreneurs -->
+        <h3>Recommended Entrepreneurs</h3>
+        <div class="list-group mt-4">
+            {% for entrepreneur, score in matched_entrepreneurs %}
+                {% if entrepreneur.id not in [conn.connected_user_id for conn in connections] %}
+                    <div class="list-group-item">
+                        <h4>{{ entrepreneur.email }}</h4>
+                        <p><strong>SOPI:</strong> {{ entrepreneur.sopi or 'Not set' }}</p>
+                        <p><strong>Matching Keywords:</strong> {{ (score * (entrepreneur.sopi or '').split() | length) | round(0) | int }}</p>
+                        <form method="POST" class="d-inline">
+                            <input type="hidden" name="connected_user_id" value="{{ entrepreneur.id }}">
+                            <input type="hidden" name="action" value="connect">
+                            <button type="submit" class="btn btn-primary">Connect</button>
+                        </form>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>No recommended entrepreneurs found.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

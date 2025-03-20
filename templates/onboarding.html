@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Onboarding{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center mt-4">Complete Your Profile</h2>
+        <div class="card mt-4">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="profile_photo" class="form-label">Profile Photo</label>
+                        <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*">
+                    </div>
+                    {% if user.role == 'entrepreneur' %}
+                        <div class="mb-3">
+                            <label for="vision_statement" class="form-label">Vision Statement</label>
+                            <input type="text" class="form-control" id="vision_statement" name="vision_statement" placeholder="e.g., Build a fintech startup to revolutionize payments" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="research_projects" class="form-label">Research or Projects</label>
+                            <textarea class="form-control" id="research_projects" name="research_projects" rows="5" placeholder="Describe your research or projects..."></textarea>
+                        </div>
+                    {% else %}
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Experience</label>
+                            <textarea class="form-control" id="experience" name="experience" rows="3" placeholder="e.g., 10 years as a Fintech Founder" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="work" class="form-label">Work History</label>
+                            <textarea class="form-control" id="work" name="work" rows="3" placeholder="Your professional work history..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projects" class="form-label">Projects</label>
+                            <textarea class="form-control" id="projects" name="projects" rows="3" placeholder="Notable projects you've worked on..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="students_mented" class="form-label">Number of Students Mentored</label>
+                            <input type="number" class="form-control" id="students_mented" name="students_mented" value="0">
+                        </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary w-100">Complete Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

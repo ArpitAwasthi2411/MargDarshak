@@ -3,55 +3,201 @@
 {% block content %}
     <!-- Hero Section -->
     <div class="hero-section">
-        <h1>Welcome, {{ user.email }}!</h1>
-        <p>Unlock your entrepreneurial potential with MargDarshak</p>
-    </div>
-
-    <!-- About the Platform Section -->
-    <div class="about-section">
-        <h2>About MargDarshak</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="about-card">
-                    <i class="fas fa-users"></i>
-                    <h3>Connect with Mentors</h3>
-                    <p>MargDarshak pairs mentees with experienced mentors to guide them on their entrepreneurial journey.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="about-card">
-                    <i class="fas fa-lightbulb"></i>
-                    <h3>AI-Driven Matching</h3>
-                    <p>Our AI matches you with mentors based on your Statement of Purpose or Interest (SOPI).</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="about-card">
-                    <i class="fas fa-rocket"></i>
-                    <h3>Hands-On Growth</h3>
-                    <p>Work on micro-projects and attend mentor-led events to gain practical experience.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Call-to-Action Section -->
-    <div class="card text-center">
-        <div class="card-body">
-            <h3>Next Steps for You</h3>
-            <p>Role: {{ user.role | capitalize }}</p>
-            {% if user.role == 'mentee' and not user.sopi %}
-                <p>Start by setting your Statement of Purpose or Interest (SOPI) to find the right mentor.</p>
-                <a href="{{ url_for('chatbot') }}" class="btn btn-primary">Set Your SOPI</a>
-            {% elif user.role == 'mentee' %}
-                <p>Your SOPI: {{ user.sopi }}</p>
-                <p>Find a mentor to guide you on your entrepreneurial journey.</p>
-                <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Find a Mentor</a>
-            {% elif user.role == 'mentor' %}
-                <p>Your Expertise: {{ user.expertise }}</p>
-                <p>Help a mentee by assigning micro-projects or hosting events.</p>
-                <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">View Mentees</a>
+        <h1>Welcome, {{ user.name }}!</h1>
+        <p>
+            {% if user.role == 'entrepreneur' %}
+                Your Journey to Entrepreneurship Starts Here.
+            {% else %}
+                Guide the Next Generation of Entrepreneurs.
             {% endif %}
+        </p>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="container">
+        <div class="card mb-4" data-aos="fade-up">
+            <div class="card-body">
+                <h3>Your Profile</h3>
+                {% if user.profile_photo %}
+                    <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                {% else %}
+                    <p>No profile photo set.</p>
+                {% endif %}
+                <p><strong>Name:</strong> {{ user.name }}</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                {% if user.role == 'entrepreneur' %}
+                    <p><strong>Vision Statement:</strong> {{ user.vision_statement or 'Not set' }}</p>
+                    <p><strong>Bio:</strong> {{ user.bio or 'Not set' }}</p>
+                    <p><strong>Research/Projects:</strong> {{ user.research_projects or 'Not set' }}</p>
+                {% else %}
+                    <p><strong>Experience:</strong> {{ user.experience or 'Not set' }}</p>
+                    <p><strong>Work History:</strong> {{ user.work or 'Not set' }}</p>
+                    <p><strong>Projects:</strong> {{ user.projects or 'Not set' }}</p>
+                    <p><strong>Students Mentored:</strong> {{ user.students_mented }}</p>
+                {% endif %}
+                <a href="{{ url_for('onboarding') }}" class="btn btn-primary">Edit Profile</a>
+            </div>
         </div>
     </div>
+
+    <!-- Entrepreneur Dashboard -->
+    {% if user.role == 'entrepreneur' %}
+        <!-- Goals Section -->
+        <div class="container">
+            <div class="goals-section mb-4">
+                <h2 data-aos="fade-up">My Goals</h2>
+                <div class="card mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body">
+                        <h3>Add a New Goal</h3>
+                        <form method="POST" action="{{ url_for('add_goal') }}">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Goal Title</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deadline" class="form-label">Deadline</label>
+                                <input type="date" class="form-control" id="deadline" name="deadline" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add Goal</button>
+                        </form>
+                    </div>
+                </div>
+                {% for goal in goals %}
+                    <div class="card mb-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-body">
+                            <h3>{{ goal.title }}</h3>
+                            <p><strong>Description:</strong> {{ goal.description or 'No description' }}</p>
+                            <p><strong>Deadline:</strong> {{ goal.deadline }}</p>
+                            <p><strong>Status:</strong> {{ goal.status }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                <h3>Goal Summary</h3>
+                <p><strong>Goals Achieved:</strong> {{ goals | selectattr('status', 'equalto', 'Completed') | list | length }}</p>
+                <p><strong>Goals Remaining:</strong> {{ goals | selectattr('status', 'equalto', 'In Progress') | list | length }}</p>
+            </div>
+        </div>
+
+        <!-- Login History -->
+        <div class="container">
+            <div class="card mb-4" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Recent Login History</h3>
+                    <ul>
+                        {% for entry in login_history %}
+                            <li>{{ entry.login_time.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+                        {% else %}
+                            <li>No login history available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="container">
+            <div class="card mb-4" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Recent Messages</h3>
+                    <div class="list-group">
+                        {% for message in messages %}
+                            <a href="{{ url_for('messages', other_user_id=message.sender.id) }}" class="list-group-item list-group-item-action">
+                                <h5>From: {{ message.sender.name }}</h5>
+                                <p>{{ message.content | truncate(50) }}</p>
+                                <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                            </a>
+                        {% else %}
+                            <p>No messages yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call-to-Action Section -->
+        <div class="container">
+            <div class="card text-center" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Next Steps for You</h3>
+                    <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Find a Mentor</a>
+                    <a href="{{ url_for('chatbot') }}" class="btn btn-primary">Talk to Chatbot</a>
+                </div>
+            </div>
+        </div>
+
+    <!-- Mentor Dashboard -->
+    {% else %}
+        <!-- Mentorship Requests -->
+        <div class="container">
+            <div class="card mb-4" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Mentorship Requests</h3>
+                    <div class="list-group">
+                        {% for request in mentorship_requests %}
+                            <div class="list-group-item">
+                                <h5>From: {{ request.entrepreneur.name }}</h5>
+                                <p><strong>Vision Statement:</strong> {{ request.entrepreneur.vision_statement }}</p>
+                                <p><strong>Requested on:</strong> {{ request.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <form method="POST" action="{{ url_for('handle_mentorship_request', request_id=request.id, action='accept') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-primary">Accept</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('handle_mentorship_request', request_id=request.id, action='decline') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-secondary">Decline</button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <p>No pending mentorship requests.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="container">
+            <div class="card mb-4" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Performance Metrics</h3>
+                    <p><strong>Students Mentored:</strong> {{ user.students_mented }}</p>
+                    <p><strong>Time Spent:</strong> (Placeholder: 50 hours)</p>
+                    <p><strong>Contributions:</strong> (Placeholder: 10 mentorship sessions)</p>
+                    <p><strong>Success Stories:</strong> {{ user.success_stories_as_mentor | length }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="container">
+            <div class="card mb-4" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Recent Messages</h3>
+                    <div class="list-group">
+                        {% for message in messages %}
+                            <a href="{{ url_for('messages', other_user_id=message.sender.id) }}" class="list-group-item list-group-item-action">
+                                <h5>From: {{ message.sender.name }}</h5>
+                                <p>{{ message.content | truncate(50) }}</p>
+                                <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                            </a>
+                        {% else %}
+                            <p>No messages yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call-to-Action Section -->
+        <div class="container">
+            <div class="card text-center" data-aos="fade-up">
+                <div class="card-body">
+                    <h3>Next Steps for You</h3>
+                    <a href="{{ url_for('match_mentors') }}" class="btn btn-primary">Search Entrepreneurs</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
